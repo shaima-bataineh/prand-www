@@ -1,206 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سباق السيارات الأردني</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: #87CEEB;
-        font-family: Arial, sans-serif;
-    }
-
-    #gameArea {
-        position: relative;
-        width: 400px;
-        height: 600px;
-        background: #555;
-        overflow: hidden;
-        border: 5px solid #333;
-        border-radius: 15px;
-        margin-bottom: 20px;
-    }
-
-    .lane {
-        position: absolute;
-        width: 10px;
-        height: 100%;
-        background: white;
-        top: 0;
-    }
-
-    .lane1 { left: 33.33%; }
-    .lane2 { left: 66.66%; }
-
-    .car {
-        position: absolute;
-        width: 50px;
-        height: 100px;
-        background-color: red;
-        bottom: 50px;
-        left: 175px;
-        border-radius: 10px;
-        z-index: 2;
-    }
-
-    .obstacle {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background-color: #222;
-        top: -50px;
-        border-radius: 5px;
-        z-index: 1;
-    }
-
-    #collisionLabel {
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        top: 250px;
-        font-size: 28px;
-        font-weight: bold;
-        color: yellow;
-        text-shadow: 2px 2px 5px black;
-        display: none;
-        z-index: 3;
-    }
-
-    button {
-        padding: 10px 20px;
-        margin: 5px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-</style>
-</head>
-<body>
-
-<div id="gameArea">
-    <div class="lane lane1"></div>
-    <div class="lane lane2"></div>
-    <div class="car" id="playerCar"></div>
-    <div id="collisionLabel">أوبس! لقد اصطدمت. أعد المحاولة</div>
-</div>
-
-<div>
-    <button id="startBtn">ابدأ اللعبة</button>
-    <button id="stopBtn">إيقاف / استئناف</button>
-    <button id="restartBtn">إعادة اللعبة</button>
-</div>
-
-<script>
-    const playerCar = document.getElementById('playerCar');
-    const gameArea = document.getElementById('gameArea');
-    const collisionLabel = document.getElementById('collisionLabel');
-
-    const laneWidth = 133; 
-    let carPosition = 175; 
-    let obstacles = [];
-    let gameSpeed = 5;
-    let gameInterval;
-    let running = false;
-
-    function startGame() {
-        if (running) return;
-        collisionLabel.style.display = 'none';
-        obstacles.forEach(obs => obs.remove());
-        obstacles = [];
-        carPosition = 175;
-        playerCar.style.left = carPosition + 'px';
-        running = true;
-        gameInterval = setInterval(gameLoop, 20);
-    }
-
-    function stopGame() {
-        if (running) {
-            clearInterval(gameInterval);
-            running = false;
-        } else {
-            running = true;
-            gameInterval = setInterval(gameLoop, 20);
-        }
-    }
-
-    function restartGame() {
-        clearInterval(gameInterval);
-        running = false;
-        startGame();
-    }
-
-    function gameLoop() {
-        if (Math.random() < 0.02) createObstacle();
-        moveObstacles();
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if(!running) return;
-        if(e.key === "ArrowLeft" && carPosition > 0){
-            carPosition -= laneWidth;
-        } else if(e.key === "ArrowRight" && carPosition < 266){
-            carPosition += laneWidth;
-        }
-        playerCar.style.left = carPosition + 'px';
-    });
-
-    function createObstacle() {
-        const obstacle = document.createElement('div');
-        obstacle.classList.add('obstacle');
-        const lane = Math.floor(Math.random() * 3);
-        obstacle.style.left = lane * laneWidth + 50 + 'px';
-        obstacle.style.top = '-50px';
-        gameArea.appendChild(obstacle);
-        obstacles.push(obstacle);
-    }
-
-    function moveObstacles() {
-        for(let i = 0; i < obstacles.length; i++){
-            const obs = obstacles[i];
-            obs.style.top = (obs.offsetTop + gameSpeed) + 'px';
-
-           
-            if(
-                playerCar.offsetLeft < obs.offsetLeft + obs.offsetWidth &&
-                playerCar.offsetLeft + playerCar.offsetWidth > obs.offsetLeft &&
-                playerCar.offsetTop < obs.offsetTop + obs.offsetHeight &&
-                playerCar.offsetTop + playerCar.offsetHeight > obs.offsetTop
-            ){
-                stopCollision();
-            }
-
-            if(obs.offsetTop > 600){
-                obs.remove();
-                obstacles.splice(i, 1);
-                i--;
-            }
-        }
-    }
-
-    function stopCollision() {
-        clearInterval(gameInterval);
-        running = false;
-        collisionLabel.style.display = 'block';
-    }
-
-    document.getElementById('startBtn').addEventListener('click', startGame);
-    document.getElementById('stopBtn').addEventListener('click', stopGame);
-    document.getElementById('restartBtn').addEventListener('click', restartGame);
-
-</script>
-</body>
+    <head>
+    <meta charset="UTF-8">
+    <title>Grid & Flex Layout</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="page">
+        <header class ="header"> <h1> learn grid and flex how work ?</h1>
+            <nav>
+        <a href="#">Home</a>
+        <a href="#">Learn</a>
+      </nav>
+        </header>
+            
+    <main class="content">
+        <div class="card">
+        <h3>Card 1</h3>
+        <p>Content inside card</p>
+        <button>Action</button>
+      </div>
+    <div class="card">
+        <h3>Card 2</h3>
+        <p>Content inside card</p>
+        <button>Action</button>
+      </div>
+    </main>
+    <footer class="footer">
+      <p>© 2025 Footer</p>
+    </footer>
+  </div>
+    </body>   
 </html>
